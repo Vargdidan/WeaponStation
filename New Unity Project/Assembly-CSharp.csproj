@@ -52,10 +52,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Binoculars.cs" />
-     <Compile Include="Assets\GoogleComponent.cs" />
-     <Compile Include="Assets\GoogleOverlay.cs" />
+     <Compile Include="Assets\GoggleComponent.cs" />
+     <Compile Include="Assets\GoggleOverlay.cs" />
      <Compile Include="Assets\Sunglasses.cs" />
-     <Compile Include="Assets\UtilityGoogles.cs" />
+     <Compile Include="Assets\UtilityGoggles.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

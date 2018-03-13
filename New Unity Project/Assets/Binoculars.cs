@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Binoculars : GoogleComponent {
+public class Binoculars : GoggleComponent {
     float zoomLevel = 60.0f;
     float originalZoomLevel;
     float targetZoomLevel;

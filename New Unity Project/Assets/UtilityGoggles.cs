@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UtilityGoogles : MonoBehaviour {
-    List<GoogleComponent> components;
+public class UtilityGoggles : MonoBehaviour {
+    List<GoggleComponent> components;
 
     // Use this for initialization
     void Start () {
-        components = new List<GoogleComponent>();
+        components = new List<GoggleComponent>();
         components.Add(new Binoculars());
 
         foreach (var com in components)

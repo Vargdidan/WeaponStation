@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoogleOverlay : GoogleComponent {
+public class GoggleOverlay : GoggleComponent {
     
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoogleComponent {
+public class GoggleComponent {
     
     public virtual void Initialize() {}
     public virtual void ActivateComponent() {}
