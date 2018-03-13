@@ -16,8 +16,8 @@ public class Overlay : WeaponComponent
             "WeaponStation v0.1\n",
             "How to use:",
             "- Press B to toggle binoculars",
-            "- Press W or S to adjust the pitch of the barrel",
-            "- Press A or D to adjust the yaw of the station"};
+            "- Press W or S to adjust the barrel's pitch",
+            "- Press A or D to adjust the station's yaw"};
     }
 
     public override void OnGUI()
