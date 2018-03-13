@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Binoculars : WeaponComponent
 {
-    float zoomLevel = 60.0f;
+    float zoomLevel = 50.0f;
     float originalZoomLevel;
     float targetZoomLevel;
     Camera mainCamera;

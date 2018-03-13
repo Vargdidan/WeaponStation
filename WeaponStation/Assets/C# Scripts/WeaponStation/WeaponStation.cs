@@ -6,8 +6,8 @@ public class WeaponStation : MonoBehaviour {
     List<WeaponComponent> components;
     GameObject turretBarrel;
     GameObject weaponStation;
-    float barrelSpeed = 5;
-    float stationSpeed = 20;
+    float barrelSpeed = 30;
+    float stationSpeed = 45;
 
     // Use this for initialization
     void Start () {
@@ -31,25 +31,27 @@ public class WeaponStation : MonoBehaviour {
             component.Update();
         }
 
+        CheckInput();
+    }
+
+    void CheckInput()
+    {
         if (Input.GetKey(KeyCode.W))
         {
-            float originalAngle = turretBarrel.transform.rotation.x;
-            turretBarrel.transform.Rotate(Vector3.left, originalAngle + barrelSpeed * Time.deltaTime);
+            turretBarrel.transform.Rotate(Vector3.left, barrelSpeed * Time.deltaTime);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            float originalAngle = turretBarrel.transform.rotation.x;
-            turretBarrel.transform.Rotate(Vector3.right, originalAngle + barrelSpeed * Time.deltaTime);
+            turretBarrel.transform.Rotate(Vector3.right, barrelSpeed * Time.deltaTime);
         }
-        else if (Input.GetKey(KeyCode.A))
-        { //TODO
-            float originalAngle = weaponStation.transform.rotation.y;
-            weaponStation.transform.Rotate(Vector3.down, originalAngle + stationSpeed * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            weaponStation.transform.Rotate(Vector3.down, stationSpeed * Time.deltaTime);
         }
         else if (Input.GetKey(KeyCode.D))
-        { //TODO
-            float originalAngle = weaponStation.transform.rotation.y;
-            weaponStation.transform.Rotate(Vector3.up, originalAngle + stationSpeed * Time.deltaTime);
+        {
+            weaponStation.transform.Rotate(Vector3.up, stationSpeed * Time.deltaTime);
         }
     }
 
@@ -59,5 +61,6 @@ public class WeaponStation : MonoBehaviour {
         {
             component.OnGUI();
         }
+        GUI.HorizontalSlider(new Rect(Screen.width/2 - 100, Screen.height - 15, 200, 200), 30, 10, 70);
     }
 }
