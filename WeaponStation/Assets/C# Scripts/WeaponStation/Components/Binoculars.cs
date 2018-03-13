@@ -9,7 +9,7 @@ public class Binoculars : WeaponComponent
     float targetZoomLevel;
     Camera mainCamera;
     
-	public override void Initialize () {
+    public override void Initialize () {
         base.Initialize();
         mainCamera = Camera.main;
         originalZoomLevel = mainCamera.fieldOfView;
@@ -17,7 +17,7 @@ public class Binoculars : WeaponComponent
     }
 
     public override void Update() {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             ToggleComponent();
         }

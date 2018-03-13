@@ -20,4 +20,5 @@ public abstract class WeaponComponent {
         }
     }
     public virtual void Update() {}
+    public virtual void OnGUI() { }
 }
