@@ -8,11 +8,13 @@ public class WeaponStation : MonoBehaviour {
     GameObject weaponStation;
     GameObject projectileOrigin;
     GameObject projectile;
+    List<GameObject> projectiles;
     Transform bulletParent;
     float barrelSpeed = 30;
     float stationSpeed = 45;
     float initialForce = 10;
     bool isFireing = false;
+    int maxProjectiles = 20;
 
     // Use this for initialization
     void Start () {
@@ -28,16 +30,23 @@ public class WeaponStation : MonoBehaviour {
         turretBarrel = GameObject.Find("TurretOrigin");
         weaponStation = GameObject.Find("WeaponStation");
         projectileOrigin = GameObject.Find("ProjectileOrigin");
+        projectiles = new List<GameObject>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        CheckInput();
+
         foreach (var component in components)
         {
             component.Update();
         }
 
-        CheckInput();
+        if (projectiles.Count >= maxProjectiles)
+        {
+            Destroy(projectiles[0]);
+            projectiles.RemoveAt(0);
+        }
     }
 
     void CheckInput()
@@ -93,7 +102,7 @@ public class WeaponStation : MonoBehaviour {
         {
             projectile = Instantiate(Resources.Load("Projectile"), projectileOrigin.transform.position, projectileOrigin.transform.rotation) as GameObject;
             projectile.GetComponent<Rigidbody>().velocity = initialForce * projectileOrigin.transform.forward;
-
+            projectiles.Add(projectile);
             yield return new WaitForSeconds(2f);
         }
     }
