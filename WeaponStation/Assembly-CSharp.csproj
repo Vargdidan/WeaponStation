@@ -54,7 +54,7 @@
      <Compile Include="Assets\C# Scripts\WeaponStation\Components\Binoculars.cs" />
      <Compile Include="Assets\C# Scripts\WeaponStation\Components\Overlay.cs" />
      <Compile Include="Assets\C# Scripts\WeaponStation\Components\WeaponComponent.cs" />
-     <Compile Include="Assets\C# Scripts\WeaponStation\Projectile\Projectile.cs" />
+     <Compile Include="Assets\C# Scripts\WeaponStation\Projectile\ProjectileScript.cs" />
      <Compile Include="Assets\C# Scripts\WeaponStation\WeaponStation.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

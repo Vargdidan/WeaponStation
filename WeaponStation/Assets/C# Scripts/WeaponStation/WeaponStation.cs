@@ -8,13 +8,13 @@ public class WeaponStation : MonoBehaviour {
     GameObject weaponStation;
     GameObject projectileOrigin;
     GameObject projectile;
-    List<GameObject> projectiles;
     Transform bulletParent;
     float barrelSpeed = 30;
     float stationSpeed = 45;
     float initialForce = 10;
+    float backburnerForce = 1;
+    float maxSpreadAngle = 1;
     bool isFireing = false;
-    int maxProjectiles = 20;
 
     // Use this for initialization
     void Start () {
@@ -30,7 +30,6 @@ public class WeaponStation : MonoBehaviour {
         turretBarrel = GameObject.Find("TurretOrigin");
         weaponStation = GameObject.Find("WeaponStation");
         projectileOrigin = GameObject.Find("ProjectileOrigin");
-        projectiles = new List<GameObject>();
 	}
 	
 	// Update is called once per frame
@@ -40,12 +39,6 @@ public class WeaponStation : MonoBehaviour {
         foreach (var component in components)
         {
             component.Update();
-        }
-
-        if (projectiles.Count >= maxProjectiles)
-        {
-            Destroy(projectiles[0]);
-            projectiles.RemoveAt(0);
         }
     }
 
@@ -82,6 +75,11 @@ public class WeaponStation : MonoBehaviour {
                 isFireing = false;
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     void OnGUI()
@@ -92,8 +90,17 @@ public class WeaponStation : MonoBehaviour {
         }
         GUIStyle textStyle = new GUIStyle();
         textStyle.fontSize = 15;
-        GUI.Label(new Rect(Screen.width / 2 - 30, Screen.height - 30, 30, 30), "Initial force", textStyle);
-        initialForce = GUI.HorizontalSlider(new Rect(Screen.width/2 - 100, Screen.height - 15, 200, 200), initialForce, 0, 30);
+        GUI.Label(new Rect(Screen.width / 2 - 30, Screen.height - 45, 30, 30), "Initial force", textStyle);
+        initialForce = GUI.HorizontalSlider(new Rect(Screen.width/2 - 100, Screen.height - 25, 200, 200), initialForce, 0, 30);
+        GUI.Label(new Rect(Screen.width / 2 - 10, Screen.height - 15, 30, 30), initialForce.ToString("F1"), textStyle);
+
+        GUI.Label(new Rect(Screen.width - 30, Screen.height - 180, 30, 30), "B\na\nc\nk\nb\nu\nr\nn", textStyle);
+        backburnerForce = GUI.VerticalSlider(new Rect(Screen.width - 15, Screen.height - 215, 200, 200), backburnerForce, 0, 2);
+        GUI.Label(new Rect(Screen.width - 25, Screen.height - 15, 30, 30), backburnerForce.ToString("F1"), textStyle);
+
+        GUI.Label(new Rect(20, Screen.height - 150, 30, 30), "S\np\nr\ne\na\nd", textStyle);
+        maxSpreadAngle = GUI.VerticalSlider(new Rect(5, Screen.height - 215, 200, 200), maxSpreadAngle, 0, 15);
+        GUI.Label(new Rect(5, Screen.height -15, 30, 30), maxSpreadAngle.ToString("F1"), textStyle);
     }
 
     public IEnumerator FireProjectile()
@@ -101,9 +108,17 @@ public class WeaponStation : MonoBehaviour {
         while (true)
         {
             projectile = Instantiate(Resources.Load("Projectile"), projectileOrigin.transform.position, projectileOrigin.transform.rotation) as GameObject;
-            projectile.GetComponent<Rigidbody>().velocity = initialForce * projectileOrigin.transform.forward;
-            projectiles.Add(projectile);
+            projectile.GetComponent<Rigidbody>().velocity = initialForce * GetStartAngle();
+            projectile.GetComponent<ProjectileScript>().SetBackburnerForce(backburnerForce);
             yield return new WaitForSeconds(2f);
         }
+    }
+
+    Vector3 GetStartAngle()
+    {
+        Quaternion fireRotation = Quaternion.LookRotation(projectileOrigin.transform.forward);
+        //Calculate a spread on the start angle so that impact point varies a bit from projectile to projectile
+        fireRotation = Quaternion.RotateTowards(fireRotation, Random.rotation, Random.Range(0.0f, maxSpreadAngle));
+        return fireRotation * projectileOrigin.transform.forward;
     }
 }
