@@ -3,25 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponStation : MonoBehaviour {
-    List<WeaponComponent> components;
-    GameObject turretBarrel;
-    GameObject weaponStation;
-    GameObject projectileOrigin;
-    GameObject projectile;
-    Transform bulletParent;
-    float barrelSpeed = 30;
-    float stationSpeed = 45;
-    float initialForce = 10;
-    float backburnerForce = 1;
-    float maxSpreadAngle = 1;
-    bool isFireing = false;
+    private Overlay hudOverlay;
+    private List<WeaponComponent> components;
+    private GameObject turretBarrel;
+    private GameObject weaponStation;
+    private GameObject projectileOrigin;
+    private Transform bulletParent;
+    private float barrelSpeed;
+    private float stationSpeed;
+    private bool isFireing;
 
     // Use this for initialization
     void Start () {
+        hudOverlay = new Overlay();
+        hudOverlay.Initialize();
+
         components = new List<WeaponComponent>();
         components.Add(new Binoculars());
-        components.Add(new Overlay());
-
         foreach (var component in components)
         {
             component.Initialize();
@@ -30,7 +28,10 @@ public class WeaponStation : MonoBehaviour {
         turretBarrel = GameObject.Find("TurretOrigin");
         weaponStation = GameObject.Find("WeaponStation");
         projectileOrigin = GameObject.Find("ProjectileOrigin");
-	}
+        barrelSpeed = 30;
+        stationSpeed = 45;
+        isFireing = false;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -84,41 +85,25 @@ public class WeaponStation : MonoBehaviour {
 
     void OnGUI()
     {
-        foreach (var component in components)
-        {
-            component.OnGUI();
-        }
-        GUIStyle textStyle = new GUIStyle();
-        textStyle.fontSize = 15;
-        GUI.Label(new Rect(Screen.width / 2 - 30, Screen.height - 45, 30, 30), "Initial force", textStyle);
-        initialForce = GUI.HorizontalSlider(new Rect(Screen.width/2 - 100, Screen.height - 25, 200, 200), initialForce, 0, 30);
-        GUI.Label(new Rect(Screen.width / 2 - 10, Screen.height - 15, 30, 30), initialForce.ToString("F1"), textStyle);
-
-        GUI.Label(new Rect(Screen.width - 30, Screen.height - 180, 30, 30), "B\na\nc\nk\nb\nu\nr\nn", textStyle);
-        backburnerForce = GUI.VerticalSlider(new Rect(Screen.width - 15, Screen.height - 215, 200, 200), backburnerForce, 0, 2);
-        GUI.Label(new Rect(Screen.width - 25, Screen.height - 15, 30, 30), backburnerForce.ToString("F1"), textStyle);
-
-        GUI.Label(new Rect(20, Screen.height - 150, 30, 30), "S\np\nr\ne\na\nd", textStyle);
-        maxSpreadAngle = GUI.VerticalSlider(new Rect(5, Screen.height - 215, 200, 200), maxSpreadAngle, 0, 15);
-        GUI.Label(new Rect(5, Screen.height -15, 30, 30), maxSpreadAngle.ToString("F1"), textStyle);
+        hudOverlay.Draw();
     }
 
-    public IEnumerator FireProjectile()
+    private IEnumerator FireProjectile()
     {
         while (true)
         {
-            projectile = Instantiate(Resources.Load("Projectile"), projectileOrigin.transform.position, projectileOrigin.transform.rotation) as GameObject;
-            projectile.GetComponent<Rigidbody>().velocity = initialForce * GetStartAngle();
-            projectile.GetComponent<ProjectileScript>().SetBackburnerForce(backburnerForce);
+            GameObject projectile = Instantiate(Resources.Load("Projectile"), projectileOrigin.transform.position, GetStartAngle()) as GameObject;
+            projectile.GetComponent<Rigidbody>().velocity = hudOverlay.GetInitialForce() * projectile.transform.forward;
+            projectile.GetComponent<ProjectileScript>().SetBackburnerForce(hudOverlay.GetBackburnerForce());
             yield return new WaitForSeconds(2f);
         }
     }
 
-    Vector3 GetStartAngle()
+    private Quaternion GetStartAngle()
     {
-        Quaternion fireRotation = Quaternion.LookRotation(projectileOrigin.transform.forward);
+        Quaternion fireRotation = projectileOrigin.transform.rotation;
         //Calculate a spread on the start angle so that impact point varies a bit from projectile to projectile
-        fireRotation = Quaternion.RotateTowards(fireRotation, Random.rotation, Random.Range(0.0f, maxSpreadAngle));
-        return fireRotation * projectileOrigin.transform.forward;
+        fireRotation = Quaternion.RotateTowards(fireRotation, Random.rotation, Random.Range(0.0f, hudOverlay.GetMaxSpreadAngle()));
+        return fireRotation;
     }
 }

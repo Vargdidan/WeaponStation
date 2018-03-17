@@ -13,11 +13,11 @@ public class ProjectileScript : MonoBehaviour {
     {
         //Apply backburner after a set amount of time
         lifeTime += Time.deltaTime;
-        if (lifeTime >= 0.2 && !outOfBackburnerFuel)
+        if (lifeTime >= 0.3 && !outOfBackburnerFuel)
         {
             GetComponent<Rigidbody>().velocity += backburnerForce * transform.forward;
 
-            if (lifeTime >= 0.4)
+            if (lifeTime >= 0.5)
             {
                 outOfBackburnerFuel = true;
             }
@@ -42,14 +42,5 @@ public class ProjectileScript : MonoBehaviour {
         updateRotation = false;
     }
 
-    public void SetBackburnerForce(float force)
-    {
-        backburnerForce = force;
-    }
-
-    //Used for debug
-    //void OnGUI()
-    //{
-    //    GUI.Label(new Rect(Screen.width / 2, 30, 30, 30), lifeTime.ToString());
-    //}
+    public void SetBackburnerForce(float force) { backburnerForce = force; }
 }

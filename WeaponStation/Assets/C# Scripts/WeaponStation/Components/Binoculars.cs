@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Binoculars : WeaponComponent
 {
-    float zoomLevel = 50.0f;
-    float originalZoomLevel;
-    float targetZoomLevel;
-    Camera mainCamera;
+    private float zoomLevel = 50.0f;
+    private float originalZoomLevel;
+    private float targetZoomLevel;
+    private Camera mainCamera;
     
     public override void Initialize () {
         base.Initialize();
